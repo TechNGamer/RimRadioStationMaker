@@ -1,0 +1,57 @@
+﻿<Window x:Class="RimRadioStationMaker.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RimRadioStationMaker"
+        mc:Ignorable="d"
+        Title="RimRadio Station Creation Helper" Height="463" Width="768" WindowStartupLocation="CenterScreen" MinWidth="768" MinHeight="512">
+	<Grid>
+		<DataGrid x:Name="rrsDataGrid" Margin="283,20,10,155" AutoGenerateColumns="False">
+			<DataGrid.Columns>
+				<DataGridTextColumn Binding="{Binding Path=Title}" ClipboardContentBinding="{x:Null}" Header="Title"/>
+				<DataGridTextColumn Binding="{Binding Path=Artist}" ClipboardContentBinding="{x:Null}" Header="Artist"/>
+				<DataGridTextColumn Binding="{Binding Path=Album}" ClipboardContentBinding="{x:Null}" Header="Album"/>
+				<DataGridTextColumn Binding="{Binding Path=FileName}" ClipboardContentBinding="{x:Null}" Header="File Name"/>
+			</DataGrid.Columns>
+		</DataGrid>
+		<GroupBox x:Name="groupBox" Header="Controls" HorizontalAlignment="Left" Margin="10,20,0,10" Width="268">
+			<Grid Margin="0">
+				<TextBox x:Name="stationNameBox" Height="23" Margin="0,3,0,0" TextWrapping="Wrap" Text="Radio Station Name" VerticalAlignment="Top"/>
+				<Image x:Name="stationIcon" StretchDirection="DownOnly" Stretch="Fill" Height="254" VerticalAlignment="Bottom"/>
+				<Button x:Name="selectIconButton" Content="Select Image" Margin="0,0,0,259" VerticalAlignment="Bottom" Click="SelectImageClick"/>
+				<TextBox x:Name="aboutTextBox" Margin="0,31,0,284" TextWrapping="Wrap" Text="About"/>
+			</Grid>
+		</GroupBox>
+		<Menu x:Name="menu" Height="20" VerticalAlignment="Top">
+			<MenuItem x:Name="fileMenu" Header="_File">
+				<MenuItem x:Name="openFileMenuItem" Header="_Open"/>
+				<MenuItem Header="_Save" Click="SaveMenuClicked"/>
+				<MenuItem x:Name="clearCacheMenuItem" Header="C_lear Cache"/>
+				<MenuItem Header="_Close" Click="CloseItemClick"/>
+			</MenuItem>
+			<MenuItem x:Name="buildMenu" Header="_Build">
+				<MenuItem Header="_Export"/>
+				<MenuItem Header="_Run" Click="RunClicked"/>
+			</MenuItem>
+			<MenuItem x:Name="aboutMenu" Header="_About" Click="AboutMenuClick"/>
+		</Menu>
+		<GroupBox x:Name="songGroupBox" Header="Song Controls" Height="140" Margin="283,0,15,10" VerticalAlignment="Bottom">
+			<Grid Margin="0,-4,0,0">
+				<TextBox x:Name="songTitleInput" Margin="65,9,143,0" TextWrapping="Wrap" Height="23" VerticalAlignment="Top"/>
+				<TextBlock x:Name="songTitleBlock" HorizontalAlignment="Left" Margin="5,10,0,0" TextWrapping="Wrap" Text="Title:" VerticalAlignment="Top" Height="22" Width="55"/>
+				<TextBlock x:Name="songArtistBlock" HorizontalAlignment="Left" Margin="5,38,0,0" TextWrapping="Wrap" Text="Artist:" Width="55" Height="22" VerticalAlignment="Top" d:LayoutOverrides="VerticalAlignment"/>
+				<TextBox x:Name="songArtistInput" Margin="65,37,143,0" TextWrapping="Wrap" Height="23" VerticalAlignment="Top"/>
+				<TextBlock x:Name="songAlbumBlock" HorizontalAlignment="Left" Margin="5,66,0,0" TextWrapping="Wrap" Text="Album:" VerticalAlignment="Top" Width="55" Height="22"/>
+				<TextBox x:Name="songAlbumInput" Margin="65,65,143,0" TextWrapping="Wrap" Height="23" VerticalAlignment="Top"/>
+				<TextBlock x:Name="songFilePathBlock" HorizontalAlignment="Left" Margin="5,93,0,0" TextWrapping="Wrap" Text="File Path:" VerticalAlignment="Top" Width="55" Height="23"/>
+				<TextBox x:Name="songFilePathInput" Height="23" Margin="65,93,143,0" TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsUndoEnabled="False"/>
+				<Button x:Name="addSongButton" Content="Add Song" Margin="0,10,10,0" VerticalAlignment="Top" Click="AddSong" HorizontalAlignment="Right" Width="128" Height="22"/>
+				<Button x:Name="editSongButton" Content="Edit Song" Margin="0,38,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="128" Click="EditSong" Height="22" d:LayoutOverrides="VerticalAlignment"/>
+				<Button x:Name="removeSongButton" Content="Remove Song" Margin="0,66,10,0" VerticalAlignment="Top" Click="RemoveSong" HorizontalAlignment="Right" Width="128" Height="22"/>
+				<Button x:Name="songFileOpenButton" Content="Locate Song" HorizontalAlignment="Right" Margin="0,0,10,6" VerticalAlignment="Bottom" Width="128" Height="23" Click="ChooseSongFile"/>
+			</Grid>
+		</GroupBox>
+
+	</Grid>
+</Window>

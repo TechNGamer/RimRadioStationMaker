@@ -1,0 +1,15 @@
+﻿<Window x:Class="RimRadioStationMaker.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RimRadioStationMaker"
+        mc:Ignorable="d"
+        Title="About RimRadio Station Creation Helper" Height="450" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Topmost="True">
+	<Grid>
+		<Image x:Name="image" Margin="10,10,383,10"/>
+		<TextBox x:Name="textBox" HorizontalAlignment="Right" Margin="0,10,10,0" TextWrapping="Wrap" Text="Program Name: RimRadio Station Creation Helper (RRSCH) or RimRadio Station Maker (RRSM)" Width="368" Height="35" VerticalAlignment="Top"/>
+		<TextBox x:Name="textBox1" HorizontalAlignment="Right" Margin="0,50,10,0" TextWrapping="Wrap" Text="Licence: GNU" Width="368" Height="23" VerticalAlignment="Top"/>
+
+	</Grid>
+</Window>
