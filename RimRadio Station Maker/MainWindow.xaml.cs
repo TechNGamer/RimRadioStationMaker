@@ -58,9 +58,12 @@ namespace RimRadioStationMaker {
 
 		private readonly ImageSource emptyIcon;
 		private readonly SaveManager saveManager = SaveManager.Singleton;
+		private readonly AboutWindow aboutWindow;
 
 		public MainWindow() {
 			emptyIcon = new BitmapImage( new Uri( Path.Combine( $"file://", emptyIconPath ) ) ); // Gets a new imgae for the icon UI Object.
+
+			aboutWindow = new AboutWindow();
 
 			// Creates a new dialog for opening images.
 			imageDialog = new OpenFileDialog {
@@ -362,6 +365,7 @@ namespace RimRadioStationMaker {
 
 		private void AboutMenuClick( object sender, RoutedEventArgs e ) {
 
+			aboutWindow.Show();
 		}
 
 		// Populates the grid with the songs in the list.

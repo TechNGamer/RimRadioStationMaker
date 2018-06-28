@@ -1,16 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace RimRadioStationMaker {
 	/// <summary>
@@ -19,6 +10,8 @@ namespace RimRadioStationMaker {
 	public partial class AboutWindow : Window {
 		public AboutWindow() {
 			InitializeComponent();
+
+			image.Source = new BitmapImage( new Uri( Path.Combine( $"file://", Environment.CurrentDirectory, "Resources", "Icons", "RRSM.png" ) ) );
 		}
 	}
 }
