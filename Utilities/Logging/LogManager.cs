@@ -75,7 +75,7 @@ namespace Utilities.Logging {
 				return;
 			}
 			// Assigns the thread.
-			logWriter = new Thread( () => WriteToLog( Thread.CurrentThread ) ) {
+			logWriter = new Thread( () => WriteToLog() ) {
 				Priority = ThreadPriority.Lowest
 			};
 			// Starts the thread.
@@ -111,8 +111,10 @@ namespace Utilities.Logging {
 
 		#region Threaded Methods
 
-		private void WriteToLog( Thread mainThread ) {
-			while( mainThread.IsAlive ) {
+		private void WriteToLog() {
+			while( true ) {
+				Debug.WriteLine( "Thread has restarted from the top." );
+
 				int i = WaitHandle.WaitAny( new WaitHandle[] { normalMessageWaiting, errorMessageWaiting, exceptionMessageWaiting, terminate } );
 
 				switch( i ) {

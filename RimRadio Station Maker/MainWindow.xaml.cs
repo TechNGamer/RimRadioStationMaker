@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 using Microsoft.Win32;
+
 using Utilities.Cache;
 using Utilities.Logging;
 using Utilities.Registry;
@@ -93,7 +95,6 @@ namespace RimRadioStationMaker {
 
 			stationIcon.Source = emptyIcon; // Displays the image.
 
-			Application.Current.Exit += log.ProcessExit; // Links the log.ProcessExit method for notifing the Logging thread to stop.
 			Closing += CheckClosing; // Adds CheckClosing to the Closing event to make sure the user wants to close.
 
 			log.Message( "Initialization complete." ); // Logs that everything has finished initalizing.
@@ -132,7 +133,11 @@ namespace RimRadioStationMaker {
 				SaveMenuClicked( null, new RoutedEventArgs() ); // Calls the method that already handles saving.
 			} else if( result == MessageBoxResult.Cancel ) { // Verify's the response back.
 				e.Cancel = true; // If response is no, it aborts the closing process.
+				return;
 			}
+
+			log.ProcessExit();
+			Thread.CurrentThread.Abort(); // HACK: This is used to ensure that the program does close. This is not graceful.
 		}
 
 		// Used to get the icon that will represent the radio station.

@@ -52,7 +52,7 @@ namespace Utilities.Logging {
 
 			if( crash ) {
 				DialogResult result = MessageBox.Show(
-					$"UwU I've made a fucky wucky! A wittle fucko boingo! The code monkey is working vewy hawd to fix this!\nYou can hewp by sending the wog file wocated at:\n{ExceptionLogLocation}\nPress Yes to continue using the program. Press No for a graceful crash.",
+					$"UwU I've made a fucky wucky! A wittle fucko boingo! The code monkey is working vewy hawd to fix this!\nYou can hewp by sending the log file wocated at:\n{ExceptionLogLocation}\nPress Yes to continue using the program. Press No for a graceful crash.",
 					"Oppise Woopsie", MessageBoxButtons.YesNo, MessageBoxIcon.Stop );
 
 				if( result == DialogResult.No ) {
@@ -66,6 +66,10 @@ namespace Utilities.Logging {
 		}
 
 		public void ProcessExit( object sender, EventArgs e ) {
+			ProcessExit();
+		}
+
+		public void ProcessExit() {
 			logManager.ProgramExit();
 		}
 
