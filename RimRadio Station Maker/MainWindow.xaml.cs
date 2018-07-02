@@ -95,8 +95,6 @@ namespace RimRadioStationMaker {
 
 			stationIcon.Source = emptyIcon; // Displays the image.
 
-			Closing += CheckClosing; // Adds CheckClosing to the Closing event to make sure the user wants to close.
-
 			log.Message( "Initialization complete." ); // Logs that everything has finished initalizing.
 		}
 
@@ -120,8 +118,8 @@ namespace RimRadioStationMaker {
 			}
 		}
 
-		// Used to check if the user really wants to close.
-		private void CheckClosing( object sender, CancelEventArgs e ) {
+		// Overrides the base method to check if the user wants to close.
+		protected override void OnClosing( CancelEventArgs e ) {
 			MessageBoxResult result;
 			log.Message( "Checking if user want's to close." ); // Logs a message, duh. -w-
 
@@ -137,7 +135,9 @@ namespace RimRadioStationMaker {
 			}
 
 			log.ProcessExit();
-			Thread.CurrentThread.Abort(); // HACK: This is used to ensure that the program does close. This is not graceful.
+			Application.Current.Shutdown();
+
+			base.OnClosing( e );
 		}
 
 		// Used to get the icon that will represent the radio station.
@@ -246,9 +246,9 @@ namespace RimRadioStationMaker {
 			PopulateOpenMenu(); // Repopulates the open menu.
 		}
 
-		#endregion
+#endregion
 
-		#region Helper Methods
+#region Helper Methods
 
 		// Adds a song to the grid for displaying and safe keeping.
 		private void AddSongToGrid() {
@@ -380,6 +380,6 @@ namespace RimRadioStationMaker {
 			}
 		}
 
-		#endregion
+#endregion
 	}
 }
