@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -59,8 +58,10 @@ namespace RimRadioStationMaker {
 		private readonly string emptyIconPath = Path.Combine( Environment.CurrentDirectory, "Resources", "Icons", "RRSM.png" );
 
 		private readonly ImageSource emptyIcon;
-		private readonly SaveManager saveManager = SaveManager.Singleton;
 		private readonly AboutWindow aboutWindow;
+
+		private readonly SaveManager saveManager = SaveManager.Singleton;
+		private readonly CacheManager cacheManager = CacheManager.Singleton;
 
 		public MainWindow() {
 			emptyIcon = new BitmapImage( new Uri( Path.Combine( $"file://", emptyIconPath ) ) ); // Gets a new imgae for the icon UI Object.
@@ -89,7 +90,7 @@ namespace RimRadioStationMaker {
 
 			InitializeComponent(); // Initializes the components. See the Microsoft .NET 4.5 docs on Window for WPF.
 
-			clearCacheMenuItem.Header += $"\n{CacheManager.Singleton.GetCacheSize( SizeMeasure.Biggest )}";
+			clearCacheMenuItem.Header += $"\n{cacheManager.GetCacheSize( SizeMeasure.Biggest )}";
 
 			PopulateOpenMenu(); // Populates the open menu item of all the saves.
 
@@ -246,9 +247,44 @@ namespace RimRadioStationMaker {
 			PopulateOpenMenu(); // Repopulates the open menu.
 		}
 
-#endregion
+		private void RunClicked( object sender, RoutedEventArgs e ) {
+			Process compileProcess = new Process {
+				StartInfo = new ProcessStartInfo() {
+					Arguments = $"-rv --project \"{stationNameBox.Text}\" --save-json \"{SaveManager.SaveFile}\" --rimworld-loc \"{RegistryFinder.FindProgramInRegistry( RegistryKey.OpenBaseKey( RegistryHive.LocalMachine, RegistryView.Default ).OpenSubKey( "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall" ), "RimWorld" )}\"",
+					UseShellExecute = true,
+					FileName = "RRCSH-Compiler.exe"
+					//Verb = "runas"
+				}
+			};
 
-#region Helper Methods
+			SaveMenuClicked( null, new RoutedEventArgs() );
+
+			compileProcess.Start();
+		}
+
+		private void AboutMenuClick( object sender, RoutedEventArgs e ) {
+
+			aboutWindow.Show();
+		}
+
+		private void ClearCacheClicked( object sender, RoutedEventArgs e ) {
+			MessageBoxResult result = MessageBox.Show( this, "OwO Are you sure you want to clear the cache, doing so will also delete saves.json causing you to lose all your SaveStates.",
+				"OwO Attention Needed!", MessageBoxButton.YesNo, MessageBoxImage.Exclamation, MessageBoxResult.No );
+
+			if( result == MessageBoxResult.Yes ) {
+				try {
+					cacheManager.ClearCache();
+					MessageBox.Show( this, "UwU Cache cleared master.", "Cache has been cleared.", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK );
+				} catch (Exception e1) {
+					MessageBox.Show( this, "UwU Sorry master, cache was unable to be cleared. Some corruption and missing refrences might of occured. Please do not be mad, just restart the computer and try again. Maybe another program is using those files?", "UwU Unable to clear cache", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK );
+					log.Exception( "An error has occured.", e1, false );
+				}
+			}
+		}
+
+		#endregion
+
+		#region Helper Methods
 
 		// Adds a song to the grid for displaying and safe keeping.
 		private void AddSongToGrid() {
@@ -353,26 +389,6 @@ namespace RimRadioStationMaker {
 			}
 		}
 
-		private void RunClicked( object sender, RoutedEventArgs e ) {
-			Process compileProcess = new Process {
-				StartInfo = new ProcessStartInfo() {
-					Arguments = $"-rv --project \"{stationNameBox.Text}\" --save-json \"{SaveManager.SaveFile}\" --rimworld-loc \"{RegistryFinder.FindProgramInRegistry( RegistryKey.OpenBaseKey( RegistryHive.LocalMachine, RegistryView.Default ).OpenSubKey( "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall"), "RimWorld" )}\"",
-					UseShellExecute = true,
-					FileName = "RRCSH-Compiler.exe"
-					//Verb = "runas"
-				}
-			};
-
-			SaveMenuClicked( null, new RoutedEventArgs() );
-
-			compileProcess.Start();
-		}
-
-		private void AboutMenuClick( object sender, RoutedEventArgs e ) {
-
-			aboutWindow.Show();
-		}
-
 		// Populates the grid with the songs in the list.
 		private void PopulateGrid( List<SongInfo> songs ) {
 			foreach( SongInfo song in songs ) {
@@ -380,6 +396,6 @@ namespace RimRadioStationMaker {
 			}
 		}
 
-#endregion
+		#endregion
 	}
 }

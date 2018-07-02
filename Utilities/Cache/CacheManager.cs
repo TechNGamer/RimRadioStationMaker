@@ -155,6 +155,10 @@ namespace Utilities.Cache {
 			}
 		}
 
+		public void ClearCache() {
+			throw new NotImplementedException();
+		}
+
 		#region Private Methods
 
 		// TODO: Work on opimizing cache.

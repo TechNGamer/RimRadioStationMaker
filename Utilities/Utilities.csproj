@@ -50,11 +50,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cache\CacheManager.cs" />
+    <Compile Include="Helper\PathExt.cs" />
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Logging\LogManager.cs" />
     <Compile Include="Persistence\PersistenceManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Registry\RegistryFinder.cs" />
+    <Compile Include="Resources\Language\LanguageManager.cs" />
     <Compile Include="Saving\SaveManager.cs" />
     <Compile Include="Saving\SaveState.cs" />
     <Compile Include="Saving\SongInfo.cs" />

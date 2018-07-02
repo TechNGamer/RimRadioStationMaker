@@ -27,7 +27,7 @@
 			<MenuItem x:Name="fileMenu" Header="_File">
 				<MenuItem x:Name="openFileMenuItem" Header="_Open"/>
 				<MenuItem Header="_Save" Click="SaveMenuClicked"/>
-				<MenuItem x:Name="clearCacheMenuItem" Header="C_lear Cache"/>
+				<MenuItem x:Name="clearCacheMenuItem" Header="C_lear Cache" Click="ClearCacheClicked"/>
 				<MenuItem Header="_Close" Click="CloseItemClick"/>
 			</MenuItem>
 			<MenuItem x:Name="buildMenu" Header="_Build">

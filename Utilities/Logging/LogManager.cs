@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading;
@@ -82,7 +81,7 @@ namespace Utilities.Logging {
 			logWriter.Start();
 		}
 
-		public void ProgramExit( ) {
+		public void ProgramExit() {
 			terminate.Set();
 		}
 
@@ -113,8 +112,6 @@ namespace Utilities.Logging {
 
 		private void WriteToLog() {
 			while( true ) {
-				Debug.WriteLine( "Thread has restarted from the top." );
-
 				int i = WaitHandle.WaitAny( new WaitHandle[] { normalMessageWaiting, errorMessageWaiting, exceptionMessageWaiting, terminate } );
 
 				switch( i ) {
