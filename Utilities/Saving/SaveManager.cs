@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Utilities.Cache;
 using Utilities.Logging;
 using Utilities.Persistence;
+using Utilities.Resources.Language;
 
 namespace Utilities.Saving {
 	public class SaveManager : IEnumerable<SaveState> {
@@ -109,7 +110,13 @@ namespace Utilities.Saving {
 				// In case something goes wrong.
 				try {
 					string json = File.ReadAllText( SaveFile ); // Holds the contents of the save file.
-					saves = JsonConvert.DeserializeObject( json, typeof( List<SaveState> ), formatting ) as List<SaveState>; // Deserializes the contents.
+
+					// Checks to see if the json contains anything.
+					if( json.Length > 0 ) {
+						saves = JsonConvert.DeserializeObject( json, typeof( List<SaveState> ), formatting ) as List<SaveState>; // Deserializes the contents.
+					} else {
+						saves = new List<SaveState>(); // Creates an empty list.
+					}
 				} catch( Exception e ) {
 					saves = new List<SaveState>(); // If exception is thrown, an empty list is created.
 
@@ -171,7 +178,7 @@ namespace Utilities.Saving {
 			try {
 				CacheManager.Singleton.CacheItems( saves );
 			} catch( Exception e ) {
-				log.Exception( "An error has occured. Please report the error on this program's GitHub Issues page.", e );
+				log.Exception( LanguageManager.Singleton[ "en_US", "save_error" ], e );
 				return;
 			}
 

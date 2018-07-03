@@ -43,6 +43,10 @@ namespace Utilities.Cache {
 		// Empty constructor for now.
 		private CacheManager() {
 			log = new Log( "Utilities.Cache.CacheManager" );
+
+			if( !Directory.Exists( CacheLocation ) ) {
+				Directory.CreateDirectory( CacheLocation );
+			}
 		}
 
 		/// <summary>

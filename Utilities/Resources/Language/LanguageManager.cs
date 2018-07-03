@@ -28,7 +28,7 @@ namespace Utilities.Resources.Language {
 
 		public string this[ string language, string key ] {
 			get {
-				if( languagePair.ContainsKey( language ) && languagePair[ language ].ContainsKey( key ) ) {
+				if( ContainsKey( language, key ) ) {
 					return languagePair[ language ][ key ];
 				} else {
 					throw new KeyNotFoundException();
@@ -40,6 +40,31 @@ namespace Utilities.Resources.Language {
 
 		private LanguageManager() {
 			languagePair = new Dictionary<string, Dictionary<string, string>>();
+			GetAllLanguages();
+		}
+
+		public bool ContainsLanguage( string lang ) {
+			return languagePair.ContainsKey( lang );
+		}
+
+		public bool ContainsKey( string lang, string key ) {
+			if( ContainsLanguage( lang ) ) {
+				return languagePair[ lang ].ContainsKey( key );
+			} else {
+				throw new KeyNotFoundException();
+			}
+		}
+
+		public bool ContainsValue( string lang, string value ) {
+			if( ContainsLanguage( lang ) ) {
+				return languagePair[ lang ].ContainsValue( value );
+			} else {
+				throw new KeyNotFoundException();
+			}
+		}
+
+		public string GetMessage( string lang, string key ) {
+			return this[ lang, key ];
 		}
 
 		private void GetAllLanguages() {

@@ -13,6 +13,7 @@ using Microsoft.Win32;
 using Utilities.Cache;
 using Utilities.Logging;
 using Utilities.Registry;
+using Utilities.Resources.Language;
 using Utilities.Saving;
 
 /* Commenting done comment created 1:07am on 6/24/2018.
@@ -62,6 +63,7 @@ namespace RimRadioStationMaker {
 
 		private readonly SaveManager saveManager = SaveManager.Singleton;
 		private readonly CacheManager cacheManager = CacheManager.Singleton;
+		private readonly LanguageManager languageManager = LanguageManager.Singleton;
 
 		public MainWindow() {
 			emptyIcon = new BitmapImage( new Uri( Path.Combine( $"file://", emptyIconPath ) ) ); // Gets a new imgae for the icon UI Object.
