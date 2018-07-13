@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RimRadioStationMaker"
         mc:Ignorable="d"
-        Title="RimRadio Station Creation Helper" Height="463" Width="768" WindowStartupLocation="CenterScreen" MinWidth="768" MinHeight="512">
+        Title="RimRadio Station Creation Helper" Height="542.782" Width="768" WindowStartupLocation="CenterScreen" MinWidth="768" MinHeight="512">
 	<Grid>
-		<DataGrid x:Name="rrsDataGrid" Margin="283,20,10,155" AutoGenerateColumns="False">
+		<DataGrid x:Name="rrsDataGrid" Margin="283,20,9.6,189.8" AutoGenerateColumns="False">
 			<DataGrid.Columns>
 				<DataGridTextColumn Binding="{Binding Path=Title}" ClipboardContentBinding="{x:Null}" Header="Title"/>
 				<DataGridTextColumn Binding="{Binding Path=Artist}" ClipboardContentBinding="{x:Null}" Header="Artist"/>
@@ -36,7 +36,7 @@
 			</MenuItem>
 			<MenuItem x:Name="aboutMenu" Header="_About" Click="AboutMenuClick"/>
 		</Menu>
-		<GroupBox x:Name="songGroupBox" Header="Song Controls" Height="140" Margin="283,0,15,10" VerticalAlignment="Bottom">
+		<GroupBox x:Name="songGroupBox" Header="Song Controls" Height="175" Margin="283,0,14.6,9.8" VerticalAlignment="Bottom">
 			<Grid Margin="0,-4,0,0">
 				<TextBox x:Name="songTitleInput" Margin="65,9,143,0" TextWrapping="Wrap" Height="23" VerticalAlignment="Top"/>
 				<TextBlock x:Name="songTitleBlock" HorizontalAlignment="Left" Margin="5,10,0,0" TextWrapping="Wrap" Text="Title:" VerticalAlignment="Top" Height="22" Width="55"/>
@@ -49,7 +49,11 @@
 				<Button x:Name="addSongButton" Content="Add Song" Margin="0,10,10,0" VerticalAlignment="Top" Click="AddSong" HorizontalAlignment="Right" Width="128" Height="22"/>
 				<Button x:Name="editSongButton" Content="Edit Song" Margin="0,38,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="128" Click="EditSong" Height="22" d:LayoutOverrides="VerticalAlignment"/>
 				<Button x:Name="removeSongButton" Content="Remove Song" Margin="0,66,10,0" VerticalAlignment="Top" Click="RemoveSong" HorizontalAlignment="Right" Width="128" Height="22"/>
-				<Button x:Name="songFileOpenButton" Content="Locate Song" HorizontalAlignment="Right" Margin="0,0,10,6" VerticalAlignment="Bottom" Width="128" Height="23" Click="ChooseSongFile"/>
+				<Button x:Name="songFileOpenButton" Content="Locate Song" HorizontalAlignment="Right" Margin="0,93,10.2,0" VerticalAlignment="Top" Width="128" Height="23" Click="ChooseSongFile"/>
+				<CheckBox x:Name="summerCheckBox" Content="Summer" HorizontalAlignment="Left" Margin="5,121,0,0" VerticalAlignment="Top"/>
+				<CheckBox x:Name="fallCheckBox" Content="Fall" HorizontalAlignment="Left" Margin="5,136,0,0" VerticalAlignment="Top"/>
+				<CheckBox x:Name="winterCheckBox" Content="Winter" HorizontalAlignment="Left" Margin="74,121,0,0" VerticalAlignment="Top"/>
+				<CheckBox x:Name="springCheckBox" Content="Spring" Margin="74,136,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
 			</Grid>
 		</GroupBox>
 
