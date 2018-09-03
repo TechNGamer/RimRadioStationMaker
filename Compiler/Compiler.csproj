@@ -57,15 +57,13 @@
     <Content Include="Resources\Assembly\RimRadio.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\Docs\help.txt" />
     <Content Include="Resources\RawScripts\MusicPack.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Compile Include="Starter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\Docs\help.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resources\RawXML\About.xml" />
     <Content Include="RRSCH-Compiler.ico" />
   </ItemGroup>

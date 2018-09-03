@@ -10,7 +10,7 @@
 		<Image x:Name="image" Margin="10,10,0,10" Source="Resources/Icons/RRSM.png" HorizontalAlignment="Left" Width="236"/>
 		<TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="251,10,0,0" TextWrapping="Wrap" Text="Program Name: RimRadio Station Creation Helper (RRSCH) or RimRadio Station Maker (RRSM)" VerticalAlignment="Top" Width="267"/>
 		<TextBlock x:Name="textBlock1" Margin="251,47,0,0" TextWrapping="Wrap" Text="License: GNU GPLv3" VerticalAlignment="Top" HorizontalAlignment="Left" Width="267"/>
-		<TextBlock x:Name="textBlock2" Margin="251,68,0,0" TextWrapping="Wrap" Text="This program is made to help in the creation of Radio Station for the RimWorld mod, RimRadio. Use of this program is permitted for use by anyone. Any modifications must be stated before hand along with any new repositories linking back to the original one." HorizontalAlignment="Left" Width="267" Height="178" VerticalAlignment="Top"/>
+        <TextBlock x:Name="textBlock2" Margin="251,68,0,0" TextWrapping="Wrap" HorizontalAlignment="Left" Width="267" Height="178" VerticalAlignment="Top"><Run Text="This program is made to help in the creation of Radio Station for the RimWorld mod, RimRadio. Use of this program is permitted for use by anyone. Any modifications must be stated before hand along with any new repositories linking back to the original one."/><LineBreak/><Run/><LineBreak/><Run/><LineBreak/><Run Text="Please note: This program is deprecated, please keep an eye for RimRadio Station Creator Remade."/></TextBlock>
 
-	</Grid>
+    </Grid>
 </Window>

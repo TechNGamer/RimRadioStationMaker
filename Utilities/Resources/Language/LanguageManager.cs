@@ -116,7 +116,9 @@ namespace Utilities.Resources.Language {
 				if( key is null || key is "" ) {
 					throw new Exception( "Key is empty" );
 				} else {
-					languagePair.Add( key, temp );
+					try {
+						languagePair.Add( key, temp );
+					} catch { }
 				}
 			}
 		}
