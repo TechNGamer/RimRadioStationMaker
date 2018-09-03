@@ -50,8 +50,8 @@ namespace Utilities.Saving {
 
 				// Checks to see if both have the same things at the same places.
 				for( int i = 0; i < songList1.Count; ++i ) {
-					if(songList1[i] != songList2[ 1 ] ) {
-						return false; // If both are not the same, it reutns false.
+					if( songList1[ i ] != songList2[ i ] ) {
+						return false;
 					}
 				}
 			}

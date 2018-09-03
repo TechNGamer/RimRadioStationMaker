@@ -64,7 +64,7 @@
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="Resources\Language\en_US.lang">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

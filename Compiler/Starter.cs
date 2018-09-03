@@ -3,9 +3,13 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+
 using Common;
+
 using Microsoft.CSharp;
+
 using Newtonsoft.Json;
+
 using Utilities.Logging;
 using Utilities.Saving;
 
@@ -148,11 +152,27 @@ namespace Compiler {
 					Console.WriteLine( $"Coping file '{song.SongPath}' to '{tempStr}'" );
 				}
 
+				Console.ForegroundColor = ConsoleColor.Red;
+
 				try {
 					File.Copy( song.SongPath, tempStr );
-				} catch( Exception e ) {
-					Console.ForegroundColor = ConsoleColor.Red;
-					Console.WriteLine( $"{e.Message}\n Stacktrace: {e.StackTrace}" );
+				} catch( ArgumentException e ) {
+					Console.WriteLine( "Something went wrong with copying and an ArgumentException was thrown." );
+				} catch( PathTooLongException e ) {
+					Console.WriteLine( $"One of the paths is too long for Windows, please fix this.\nPath 1: {song.SongPath}\nPath 2: {tempStr}" );
+				} catch( IOException e ) {
+					if( e is DirectoryNotFoundException dNFE ) {
+						Console.WriteLine( $"One of these paths refrences a directory that does not exist:\n\tPath 1: {song.SongPath}\n\tPath 2: {tempStr}" );
+					} else if( e is FileNotFoundException fNFE ) {
+						Console.WriteLine( $"This file does not exist: {song.SongPath}" );
+					} else {
+						Console.WriteLine( $"Unknown IOException.\n{e.Message}\n{e.StackTrace}" );
+					}
+				} catch( NotSupportedException e ) {
+					Console.WriteLine( $"One of the paths is in an invalid format:\n{song.SongPath}\n{tempStr}" );
+				} catch {
+					Console.WriteLine( "Something happened." );
+				} finally {
 					Console.ResetColor();
 				}
 			}
@@ -231,8 +251,8 @@ namespace Compiler {
 								break;
 							case "--rimworld-loc":
 								gameLoc = Environment.GetCommandLineArgs()[ ++i ];
-								gameAssembly = Path.Combine( Path.Combine( Path.Combine( gameLoc, "RimWorldWin_Data" ), "Managed" ), "Assembly-CSharp.dll" );
-								unityAssembly = Path.Combine( Path.Combine( Path.Combine( gameLoc, "RimWorldWin_Data" ), "Managed" ), "UnityEngine.dll" );
+								gameAssembly = Path.Combine( Path.Combine( Path.Combine( gameLoc, "RimWorldWin64_Data" ), "Managed" ), "Assembly-CSharp.dll" );
+								unityAssembly = Path.Combine( Path.Combine( Path.Combine( gameLoc, "RimWorldWin64_Data" ), "Managed" ), "UnityEngine.dll" );
 								modsFolder = Path.Combine( gameLoc, "Mods" );
 								break;
 							case "--help":

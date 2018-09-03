@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Util
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimRadio Station Maker", "RimRadio Station Maker\RimRadio Station Maker.csproj", "{FF8FC7DC-17E7-4D06-9344-7F375FF0281D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities.Helper.Walkers", "Utilities.Helper.Walkers\Utilities.Helper.Walkers.csproj", "{7736CCCC-FF28-433D-8306-D690F9FB7129}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{FF8FC7DC-17E7-4D06-9344-7F375FF0281D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF8FC7DC-17E7-4D06-9344-7F375FF0281D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF8FC7DC-17E7-4D06-9344-7F375FF0281D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7736CCCC-FF28-433D-8306-D690F9FB7129}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7736CCCC-FF28-433D-8306-D690F9FB7129}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7736CCCC-FF28-433D-8306-D690F9FB7129}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7736CCCC-FF28-433D-8306-D690F9FB7129}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

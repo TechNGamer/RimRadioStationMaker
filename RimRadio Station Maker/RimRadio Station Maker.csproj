@@ -42,8 +42,8 @@
     <StartupObject>RimRadioStationMaker.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Common">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\MusicPlayer\Assemblies\Common.dll</HintPath>
+    <Reference Include="RimRadioPlaylist">
+      <HintPath>..\Assembly\RimRadioPlaylist.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -114,6 +114,10 @@
     <ProjectReference Include="..\Compiler\Compiler.csproj">
       <Project>{7880ac14-3f18-490e-b30c-d29289b5fa67}</Project>
       <Name>Compiler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities.Helper.Walkers\Utilities.Helper.Walkers.csproj">
+      <Project>{7736CCCC-FF28-433D-8306-D690F9FB7129}</Project>
+      <Name>Utilities.Helper.Walkers</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{894994f7-663a-4a7b-b64f-a0c56d5c7782}</Project>

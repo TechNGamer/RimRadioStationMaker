@@ -128,18 +128,16 @@ namespace Utilities.Cache {
 		/// <param name="saves">The list of saves.</param>
 		internal void CacheItems( List<SaveState> saves ) {
 			string copyHome;
-			string profileHome;
 
 			for( int i = 0; i < saves.Count; ++i ) {
-				profileHome = Path.Combine( CacheLocation, saves[ i ].name );
 				SaveState save = saves[ i ];
 
-				if( !Directory.Exists( profileHome ) ) {
-					Directory.CreateDirectory( profileHome );
+				if( !Directory.Exists( CacheLocation ) ) {
+					Directory.CreateDirectory( CacheLocation );
 				}
 
-				if( !saves[ i ].iconPath.StartsWith( profileHome ) ) {
-					copyHome = Path.Combine( profileHome, new FileInfo( saves[ i ].iconPath ).Name );
+				if( saves[i].iconPath != null && !saves[ i ].iconPath.StartsWith( CacheLocation ) ) {
+					copyHome = Path.Combine( CacheLocation, new FileInfo( saves[ i ].iconPath ).Name );
 
 					try {
 						if( saves[ i ].iconPath.StartsWith( CacheLocation ) ) {
@@ -155,7 +153,7 @@ namespace Utilities.Cache {
 					}
 				}
 
-				CacheSongs( profileHome, ref save.songs );
+				CacheSongs( CacheLocation, ref save.songs );
 			}
 		}
 

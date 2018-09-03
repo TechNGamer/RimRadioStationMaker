@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+#if DEBUG
 using System.Diagnostics;
+#endif
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,6 +13,7 @@ using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 
 using Utilities.Cache;
+using Utilities.Helper.Walkers;
 using Utilities.Logging;
 using Utilities.Registry;
 using Utilities.Resources.Language;
@@ -56,65 +59,84 @@ namespace RimRadioStationMaker {
 		private SongInfo song = new SongInfo();
 		private Log log;
 
-		private readonly string emptyIconPath = Path.Combine( Environment.CurrentDirectory, "Resources", "Icons", "RRSM.png" );
+		private string emptyIconPath = Path.Combine( Environment.CurrentDirectory, "Resources", "Icons", "RRSM.png" );
 
-		private readonly ImageSource emptyIcon;
-		private readonly AboutWindow aboutWindow;
+		private ImageSource emptyIcon;
+		private AboutWindow aboutWindow;
 
-		private readonly SaveManager saveManager = SaveManager.Singleton;
-		private readonly CacheManager cacheManager = CacheManager.Singleton;
-		private readonly LanguageManager languageManager = LanguageManager.Singleton;
+		// Singletons
+		private SaveManager saveManager = SaveManager.Singleton;
+		private CacheManager cacheManager = CacheManager.Singleton;
+		private LanguageManager languageManager = LanguageManager.Singleton;
 
 		public MainWindow() {
-			emptyIcon = new BitmapImage( new Uri( Path.Combine( $"file://", emptyIconPath ) ) ); // Gets a new imgae for the icon UI Object.
 
-			aboutWindow = new AboutWindow();
+			InitializeComponent(); // Initializes the components. See the Microsoft .NET 4.5 docs on WPF.
 
-			// Creates a new dialog for opening images.
-			imageDialog = new OpenFileDialog {
-				Filter = "Image Files|*.png;*.bitmap;*.jpg;*.jpeg;*.bmp", // Filter provides only those specific files.
-				InitialDirectory = Environment.GetFolderPath( Environment.SpecialFolder.MyPictures ), // Defaults to the picture directory.
-				Multiselect = false, // Disables multiselect.
-				CheckFileExists = true, // Enables checking that the file actually exists.
-				CheckPathExists = true // Checks to make sure the path exists.
-			};
-
-			// Creates a new dialog for opening music files.
-			songFileDialog = new OpenFileDialog {
-				Filter = "Unity Supported Audio|*.wav;*.ogg", // Filter provides only files that Unity can open at runtime.
-				InitialDirectory = Environment.GetFolderPath( Environment.SpecialFolder.MyMusic ), // Sets the inital directory to the music folder at start.
-				Multiselect = false, // Disables multiselect.
-				CheckFileExists = true, // Enables checking that the file actually exists.
-				CheckPathExists = true // Enables checking that the file actually exists.
-			};
-
-			log = new Log( "RimRadioStationMaker.MainWindow" ); // Creates a log object to enable logging to the log files.
-
-			InitializeComponent(); // Initializes the components. See the Microsoft .NET 4.5 docs on Window for WPF.
-
-			clearCacheMenuItem.Header += $"\n{cacheManager.GetCacheSize( SizeMeasure.Biggest )}";
+			CreateObjectsAndAssign(); // Creates objects that are needed and also assigns what needs to be.
 
 			PopulateOpenMenu(); // Populates the open menu item of all the saves.
-
-			stationIcon.Source = emptyIcon; // Displays the image.
 
 			log.Message( "Initialization complete." ); // Logs that everything has finished initalizing.
 		}
 
 		#region Event Methods
 
+		private void GetLanguage( object sender, RoutedEventArgs e ) {
+			foreach( Visual v in TreeWalker.GetVisualTree<Visual>( this ) ) {
+				log.Message( $"Visual v is of type '{v.GetType()}'." );
+
+				if( v is Control c ) {
+					log.Message( $"Visual v name is '{c.Name}'." );
+				}
+
+				if( v is GroupBox gP ) {
+					AssignLanguageForGroupBox( gP );
+				} else if( v is TextBlock tBl ) {
+					AssignLanguageForTextBlock( tBl );
+				} else if( v is TextBox tBx ) {
+					AssignLanguageForTextBox( tBx );
+				} else if( v is MenuItem mI ) {
+					AssignLanguageForMenuItem( mI );
+				} else if( v is ContentControl cC ) {
+					AssignLanguageForContentControl( cC );
+				}
+			}
+		}
+
 		// Opens the proper save state for assigning.
 		private void OpenMenuEntryClicked( object sender, RoutedEventArgs e ) {
+			SaveState save;
+			string tempPath;
+
 			if( sender is MenuItem ) { // Checks to make sure sender is a MenuItem.
 				foreach( MenuItem menuItem in openFileMenuItem.Items ) { // Itterates through the items in the open menu item.
 					if( menuItem.Header as string == ( sender as MenuItem ).Header as string ) { // Checks to see if there headers are the same.
-						SaveState save = saveManager[ menuItem.Header as string ]; // Pulls the save from the SaveManager.
+						save = saveManager[ menuItem.Header as string ]; // Pulls the save from the SaveManager.
+						tempPath = currentIconPath;
 
 						currentIconPath = save.iconPath; // Assigns the current icon path to the one in the save object.
+
+						try {
+							ApplyImage(); // Applys the new image.
+						} catch( ArgumentNullException e1 ) {
+							// Tells the user that their is no thumbnail.
+							MessageBox.Show( this, "You must have an thumbnail to show.", "No thumbnail", MessageBoxButton.OK, MessageBoxImage.Error );
+							log.Exception( "No thumbnail.", e1, false ); // Logs the exception.
+
+							currentIconPath = tempPath; // Resets the image path.
+						} catch( Exception e1 ) {
+							// Tells the user that an unexpected exception happened of unknown cause.
+							MessageBox.Show( this, $"Something happened\nException: {e1.GetType().FullName}", "Something happened", MessageBoxButton.OK, MessageBoxImage.Error );
+							log.Exception( "Something happened while applying the image, and thus, this exception.", e1, false ); // Logs the exception.
+
+							currentIconPath = tempPath; // Resets the image path.
+							return; // Returns to make sure no damage has been done.
+						}
+
 						aboutTextBox.Text = save.about; // Assigns the data in the about text box to the one in the save object.
 						stationNameBox.Text = save.name; // Assigns the stationNameBox text to the one in the save object.
 
-						ApplyImage(); // Applys the new image.
 						PopulateGrid( save.songs ); // Populates the grid.
 					}
 				}
@@ -137,7 +159,7 @@ namespace RimRadioStationMaker {
 				return;
 			}
 
-			log.ProcessExit();
+			log.ProcessExit( null, new EventArgs() );
 			Application.Current.Shutdown();
 
 			base.OnClosing( e );
@@ -265,7 +287,6 @@ namespace RimRadioStationMaker {
 		}
 
 		private void AboutMenuClick( object sender, RoutedEventArgs e ) {
-
 			aboutWindow.Show();
 		}
 
@@ -277,7 +298,7 @@ namespace RimRadioStationMaker {
 				try {
 					cacheManager.ClearCache();
 					MessageBox.Show( this, "UwU Cache cleared master.", "Cache has been cleared.", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK );
-				} catch (Exception e1) {
+				} catch( Exception e1 ) {
 					MessageBox.Show( this, "UwU Sorry master, cache was unable to be cleared. Some corruption and missing refrences might of occured. Please do not be mad, just restart the computer and try again. Maybe another program is using those files?", "UwU Unable to clear cache", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK );
 					log.Exception( "An error has occured.", e1, false );
 				}
@@ -287,6 +308,134 @@ namespace RimRadioStationMaker {
 		#endregion
 
 		#region Helper Methods
+
+		private void AssignLanguageForGroupBox( GroupBox groupBox ) {
+			if( languageManager.ContainsKey( languageManager.LanguageUsed, groupBox.Name ) ) {
+				groupBox.Header = languageManager[ languageManager.LanguageUsed, groupBox.Name ];
+				log.Message( $"GroupBox '{groupBox.Name}' lang was found, it now displays, '{groupBox.Header}'." );
+			} else {
+				log.Message( $"No lang entry found for '{groupBox.Name}'." );
+			}
+		}
+
+		private void AssignLanguageForTextBlock( TextBlock textBlock ) {
+			if( languageManager.ContainsKey( languageManager.LanguageUsed, textBlock.Name ) ) {
+				textBlock.Text = languageManager[ languageManager.LanguageUsed, textBlock.Name ];
+				log.Message( $"TextBlock '{textBlock.Name}' lang was found, it now displays, '{textBlock.Text}'." );
+			} else {
+				log.Message( $"No lang entry found for '{textBlock.Name}'." );
+			}
+		}
+
+		private void AssignLanguageForTextBox( TextBox textBox ) {
+			if( languageManager.ContainsKey( languageManager.LanguageUsed, textBox.Name ) ) {
+				textBox.Text = languageManager[ languageManager.LanguageUsed, textBox.Name ];
+				log.Message( $"TextBlock '{textBox.Name}' lang was found, it now displays, '{textBox.Text}'." );
+			} else {
+				log.Message( $"No lang entry found for '{textBox.Name}'." );
+			}
+		}
+
+		private void AssignLanguageForContentControl( ContentControl contentControl ) {
+			if( languageManager.ContainsKey( languageManager.LanguageUsed, contentControl.Name ) ) {
+				contentControl.Content = languageManager[ languageManager.LanguageUsed, contentControl.Name ];
+				log.Message( $"ContentControl '{contentControl.Name}' lang was found, it now displays, '{contentControl.Content}'." );
+			} else {
+				log.Message( $"No lang entry found for '{contentControl.Name}'." );
+			}
+		}
+
+		private void AssignLanguageForMenuItem( params MenuItem[] menuItems ) {
+			foreach( MenuItem menuItem in menuItems ) {
+				AssignLanguageForMenuItem( menuItem );
+			}
+		}
+
+		private void AssignLanguageForMenuItem( MenuItem menuItem ) {
+			if( languageManager.ContainsKey( languageManager.LanguageUsed, menuItem.Name ) ) {
+				menuItem.Header = languageManager[ languageManager.LanguageUsed, menuItem.Name ];
+				log.Message( $"MenuItem '{menuItem.Name}' lang was found, it now displays, '{menuItem.Header}'." );
+			} else {
+				log.Message( $"No lang entry found for '{menuItem.Name}'." );
+			}
+		}
+
+		private void CreateObjectsAndAssign() {
+			log = new Log( "RimRadioStationMaker.MainWindow" ); // Creates a log object to enable logging to the log files.
+
+			emptyIcon = new BitmapImage( new Uri( Path.Combine( $"file://", emptyIconPath ) ) ); // Gets a new imgae for the icon UI Object.
+
+			aboutWindow = new AboutWindow();
+
+			// Creates a new dialog for opening images.
+			imageDialog = new OpenFileDialog {
+				Filter = "Image Files|*.png;*.bitmap;*.jpg;*.jpeg;*.bmp", // Filter provides only those specific files.
+				InitialDirectory = Environment.GetFolderPath( Environment.SpecialFolder.MyPictures ), // Defaults to the picture directory.
+				Multiselect = false, // Disables multiselect.
+				CheckFileExists = true, // Enables checking that the file actually exists.
+				CheckPathExists = true // Checks to make sure the path exists.
+			};
+
+			// Creates a new dialog for opening music files.
+			songFileDialog = new OpenFileDialog {
+				Filter = "Unity Supported Audio|*.wav;*.ogg", // Filter provides only files that Unity can open at runtime.
+				InitialDirectory = Environment.GetFolderPath( Environment.SpecialFolder.MyMusic ), // Sets the inital directory to the music folder at start.
+				Multiselect = false, // Disables multiselect.
+				CheckFileExists = true, // Enables checking that the file actually exists.
+				CheckPathExists = true // Enables checking that the file actually exists.
+			};
+
+			stationIcon.Source = emptyIcon; // Displays the image.
+
+			PopulateLanguageList();
+
+			ChangeLanguage();
+
+			Loaded += GetLanguage;
+		}
+
+		private void PopulateLanguageList() {
+			MenuItem newMenuItem;
+
+			foreach( string key in languageManager.Keys ) {
+				newMenuItem = new MenuItem {
+					Header = key
+				};
+
+				newMenuItem.Click += ChangeLanguageTo;
+
+				changeLanguageMenuItem.Items.Add( newMenuItem );
+			}
+		}
+
+		private void ChangeLanguageTo( object sender, RoutedEventArgs e ) {
+			if( sender is MenuItem mI && !mI.IsChecked ) {
+				languageManager.LanguageUsed = mI.Header as string;
+
+				foreach( MenuItem menuItem in changeLanguageMenuItem.Items ) {
+					if( menuItem.Header as string == languageManager.LanguageUsed ) {
+						menuItem.IsChecked = true;
+					} else {
+						menuItem.IsChecked = false;
+					}
+				}
+
+				ChangeLanguage();
+			}
+		}
+
+		private void ChangeLanguage() {
+			if( languageManager.ContainsKey( languageManager.LanguageUsed, clearCacheMenuItem.Name ) ) {
+				clearCacheMenuItem.Header = $"{languageManager[ languageManager.LanguageUsed, clearCacheMenuItem.Name ]}\n{cacheManager.GetCacheSize( SizeMeasure.Biggest )}";
+			}
+
+			if( languageManager.ContainsKey( languageManager.LanguageUsed, changeLanguageMenuItem.Name ) ) {
+				changeLanguageMenuItem.Header = languageManager[ languageManager.LanguageUsed, changeLanguageMenuItem.Name ];
+			}
+
+			AssignLanguageForMenuItem( openFileMenuItem, saveFileMenuItem, closeMenuItem );
+			GetLanguage( this, new RoutedEventArgs() );
+		}
 
 		// Adds a song to the grid for displaying and safe keeping.
 		private void AddSongToGrid() {

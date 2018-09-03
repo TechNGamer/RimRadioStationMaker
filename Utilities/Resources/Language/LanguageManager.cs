@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Utilities.Logging;
 
 namespace Utilities.Resources.Language {
 	// TODO: Work on LanguageManager.
@@ -19,7 +20,7 @@ namespace Utilities.Resources.Language {
 		}
 
 		public static string LanguageFolder {
-			get => Helper.Path.Combine( new string[] { Environment.CurrentDirectory, "Resources", "Language" } );
+			get => Helper.PathExt.Combine( new string[] { Environment.CurrentDirectory, "Resources", "Language" } );
 		}
 
 		private static LanguageManager singleton;
@@ -28,19 +29,35 @@ namespace Utilities.Resources.Language {
 
 		public string this[ string language, string key ] {
 			get {
-				if( ContainsKey( language, key ) ) {
-					return languagePair[ language ][ key ];
-				} else {
-					throw new KeyNotFoundException();
-				}
+				return GetMessage( language, key );
+			}
+		}
+
+		public string LanguageUsed {
+			get;
+			set;
+		}
+
+		public string[] Keys {
+			get {
+				string[] keys = new string[ languagePair.Count ];
+
+				languagePair.Keys.CopyTo( keys, 0 );
+
+				return keys;
 			}
 		}
 
 		private Dictionary<string, Dictionary<string, string>> languagePair; // Welp, this is confusing.
+		private Log log;
 
 		private LanguageManager() {
 			languagePair = new Dictionary<string, Dictionary<string, string>>();
+			log = new Log( "Utilities.Resources.Language.LanguageManager" );
+
 			GetAllLanguages();
+
+			LanguageUsed = Keys[ 0 ];
 		}
 
 		public bool ContainsLanguage( string lang ) {
@@ -63,8 +80,21 @@ namespace Utilities.Resources.Language {
 			}
 		}
 
-		public string GetMessage( string lang, string key ) {
-			return this[ lang, key ];
+		public string GetMessage( string language, string key ) {
+			if( ContainsKey( language, key ) ) {
+				return languagePair[ language ][ key ];
+			} else {
+				throw new KeyNotFoundException();
+			}
+		}
+
+		public string TryGetMessage( string language, string key ) {
+			try {
+				return GetMessage( language, key );
+			} catch {
+				log.Message( $"No key was found, returning '{key}' back." );
+				return key;
+			}
 		}
 
 		private void GetAllLanguages() {

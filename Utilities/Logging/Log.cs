@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Utilities.Logging {
@@ -62,11 +63,20 @@ namespace Utilities.Logging {
 			}
 		}
 
-		public void ProcessExit( object sender, EventArgs e ) {
-			ProcessExit();
+		public void PrintArray( object[] objects ) {
+			StringBuilder stringBuilder = new StringBuilder( "object[]{" );
+
+			for( int i = 0; i < objects.Length; ++i ) {
+				stringBuilder.Append( $"{objects[ i ].ToString()}" );
+				if(i != objects.Length - 1 ) {
+					stringBuilder.Append( ", " );
+				}
+			}
+
+			Message( stringBuilder.Append( "}" ).ToString() );
 		}
 
-		public void ProcessExit() {
+		public void ProcessExit( object sender, EventArgs e ) {
 			logManager.ProgramExit();
 		}
 
