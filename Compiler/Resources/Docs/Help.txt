@@ -1,0 +1,13 @@
+﻿RimRadio Station Creation Helper Compiler (RRSCH-Compiler or RRSCHC) is a program bundled with RimRadio Station Creation Helper also known as RimRadio Station Maker in source.
+The purpose of the compiler is to compile any projects that are given to it. For example:
+RRSCH-Compiler.exe --project "KuuRadio" "Monstercat Radio" --save-json "C:\RimRadio Stations\saves.json" --RimWorld "C:\Program Files (x86)\Steam\steamapps\common\RimWorld"
+or
+RRSCH-Compiler.exe --project "KuuRadio" --output-dir "C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods" --save-json "C:\RimRadio Stations\saves.json" --run --RimWorld "C:\Program Files (x86)\Steam\steamapps\common\RimWorld"
+
+Commands:
+-r          --run:            Runs RimWorld once compilation is complete.
+-v      --verbose:            Output current action to the screen.
+        --project:            Project or projects to export. Case-sensitive.
+      --save-json: (Required) Location of the save json file.
+   --rimworld-loc: (Required) Location of RimWorld.
+-h         --help:            Displays this message.
