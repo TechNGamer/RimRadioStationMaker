@@ -19,32 +19,6 @@ using Utilities.Registry;
 using Utilities.Resources.Language;
 using Utilities.Saving;
 
-/* Commenting done comment created 1:07am on 6/24/2018.
- ▄▄▄▄▄▄▄▄▄▄▄  ▄         ▄  ▄▄▄▄▄▄▄▄▄▄▄ 
-▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌
-▐░█▀▀▀▀▀▀▀█░▌▐░▌       ▐░▌▐░█▀▀▀▀▀▀▀█░▌
-▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌
-▐░▌       ▐░▌▐░▌   ▄   ▐░▌▐░▌       ▐░▌
-▐░▌       ▐░▌▐░▌  ▐░▌  ▐░▌▐░▌       ▐░▌
-▐░▌       ▐░▌▐░▌ ▐░▌░▌ ▐░▌▐░▌       ▐░▌
-▐░▌       ▐░▌▐░▌▐░▌ ▐░▌▐░▌▐░▌       ▐░▌
-▐░█▄▄▄▄▄▄▄█░▌▐░▌░▌   ▐░▐░▌▐░█▄▄▄▄▄▄▄█░▌
-▐░░░░░░░░░░░▌▐░░▌     ▐░░▌▐░░░░░░░░░░░▌
- ▀▀▀▀▀▀▀▀▀▀▀  ▀▀       ▀▀  ▀▀▀▀▀▀▀▀▀▀▀
-
- ▄▄▄▄▄▄▄▄▄▄▄  ▄▄       ▄▄       ▄▄▄▄▄▄▄▄▄▄▄       ▄▄▄▄▄▄▄▄▄▄▄  ▄         ▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄         ▄  ▄ 
-▐░░░░░░░░░░░▌▐░░▌     ▐░░▌     ▐░░░░░░░░░░░▌     ▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░▌
- ▀▀▀▀█░█▀▀▀▀ ▐░▌░▌   ▐░▐░▌     ▐░█▀▀▀▀▀▀▀█░▌     ▐░█▀▀▀▀▀▀▀▀▀ ▐░▌       ▐░▌▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌▐░▌       ▐░▌▐░▌
-     ▐░▌     ▐░▌▐░▌ ▐░▌▐░▌     ▐░▌       ▐░▌     ▐░▌          ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌
-     ▐░▌     ▐░▌ ▐░▐░▌ ▐░▌     ▐░█▄▄▄▄▄▄▄█░▌     ▐░█▄▄▄▄▄▄▄▄▄ ▐░▌       ▐░▌▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌▐░▌
-     ▐░▌     ▐░▌  ▐░▌  ▐░▌     ▐░░░░░░░░░░░▌     ▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌
-     ▐░▌     ▐░▌   ▀   ▐░▌     ▐░█▀▀▀▀▀▀▀█░▌     ▐░█▀▀▀▀▀▀▀▀▀ ▐░▌       ▐░▌▐░█▀▀▀▀█░█▀▀ ▐░█▀▀▀▀█░█▀▀  ▀▀▀▀█░█▀▀▀▀ ▐░▌
-     ▐░▌     ▐░▌       ▐░▌     ▐░▌       ▐░▌     ▐░▌          ▐░▌       ▐░▌▐░▌     ▐░▌  ▐░▌     ▐░▌       ▐░▌      ▀
- ▄▄▄▄█░█▄▄▄▄ ▐░▌       ▐░▌     ▐░▌       ▐░▌     ▐░▌          ▐░█▄▄▄▄▄▄▄█░▌▐░▌      ▐░▌ ▐░▌      ▐░▌      ▐░▌      ▄
-▐░░░░░░░░░░░▌▐░▌       ▐░▌     ▐░▌       ▐░▌     ▐░▌          ▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░▌       ▐░▌     ▐░▌     ▐░▌
- ▀▀▀▀▀▀▀▀▀▀▀  ▀         ▀       ▀         ▀       ▀            ▀▀▀▀▀▀▀▀▀▀▀  ▀         ▀  ▀         ▀       ▀       ▀
- */
-
 namespace RimRadioStationMaker {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
@@ -291,15 +265,15 @@ namespace RimRadioStationMaker {
 		}
 
 		private void ClearCacheClicked( object sender, RoutedEventArgs e ) {
-			MessageBoxResult result = MessageBox.Show( this, "OwO Are you sure you want to clear the cache, doing so will also delete saves.json causing you to lose all your SaveStates.",
-				"OwO Attention Needed!", MessageBoxButton.YesNo, MessageBoxImage.Exclamation, MessageBoxResult.No );
+			MessageBoxResult result = MessageBox.Show( this, "Are you sure you want to clear the cache, doing so will also delete saves.json causing you to lose all your SaveStates.",
+				"Attention Needed!", MessageBoxButton.YesNo, MessageBoxImage.Exclamation, MessageBoxResult.No );
 
 			if( result == MessageBoxResult.Yes ) {
 				try {
 					cacheManager.ClearCache();
-					MessageBox.Show( this, "UwU Cache cleared master.", "Cache has been cleared.", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK );
+					MessageBox.Show( this, "Cache cleared", "Cache has been cleared.", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK );
 				} catch( Exception e1 ) {
-					MessageBox.Show( this, "UwU Sorry master, cache was unable to be cleared. Some corruption and missing refrences might of occured. Please do not be mad, just restart the computer and try again. Maybe another program is using those files?", "UwU Unable to clear cache", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK );
+					MessageBox.Show( this, "Cache was unable to be cleared. Some corruption and missing refrences might of occured. Please do not be mad, just restart the computer and try again. Maybe another program is using those files?", "Unable to clear cache", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK );
 					log.Exception( "An error has occured.", e1, false );
 				}
 			}

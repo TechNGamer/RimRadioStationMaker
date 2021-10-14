@@ -50,14 +50,13 @@ namespace Utilities.Logging {
 
 			if( crash ) {
 				DialogResult result = MessageBox.Show(
-					$"UwU I've made a fucky wucky! A wittle fucko boingo! The code monkey is working vewy hawd to fix this!\nYou can hewp by sending the log file wocated at:\n{ExceptionLogLocation}\nPress Yes to continue using the program. Press No for a graceful crash.",
-					"Oppise Woopsie", MessageBoxButtons.YesNo, MessageBoxIcon.Stop );
+					$"Something happened.", MessageBoxButtons.YesNo, MessageBoxIcon.Stop );
 
 				if( result == DialogResult.No ) {
 					try {
 						Environment.Exit( -1 );
 					} catch {
-						MessageBox.Show( $"UwU I'm sowwy mastew. I know you wanted me to leave, but I messed up.\nPwease fowgive me.", "Don't hurt me master.", MessageBoxButtons.OK );
+						MessageBox.Show( $"Something happened while trying to quit.", "Something happened.", MessageBoxButtons.OK );
 					}
 				}
 			}
